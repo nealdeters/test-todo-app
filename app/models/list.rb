@@ -6,36 +6,40 @@ class List < ActiveRecord::Base
   end
 
   def snooze_all_tasks!
-    tasks.each do |task|
-      task.snooze_hour!
-    end
+    tasks.each { |task| task.snooze_hour! }
+    # tasks.each do |task|
+    #   task.snooze_hour!
+    # end
   end
 
   def total_duration
-    total = 0
-    tasks.each do |task|
-      total += task.duration
-    end
-    total
+    tasks.sum(:duration)
+    # total = 0
+    # tasks.each do |task|
+    #   total += task.duration
+    # end
+    # total
   end
 
   def incomplete_tasks
-    array_of_tasks = []
-    tasks.each do |task|
-      if !task.complete
-        array_of_tasks << task
-      end
-    end
-    array_of_tasks
+    tasks.where(complete: false)
+    # array_of_tasks = []
+    # tasks.each do |task|
+    #   if !task.complete
+    #     array_of_tasks << task
+    #   end
+    # end
+    # array_of_tasks
   end
 
   def favorite_tasks
-    array_of_tasks = []
-    tasks.each do |task|
-      if task.favorite
-        array_of_tasks << task
-      end
-    end
-    array_of_tasks
+    tasks.where(favorite: true)
+    # array_of_tasks = []
+    # tasks.each do |task|
+    #   if task.favorite
+    #     array_of_tasks << task
+    #   end
+    # end
+    # array_of_tasks
   end
 end
